@@ -17,7 +17,7 @@
 - name: "mount {{ hostname_personlig_disk }}/home/{{ ident }}"
   mount:
     path: /mnt/w
-    src: "//{{ hostname_personlig_disk }}/home/{{ ident }}"
+    src: "//{{ hostname_personlig_disk }}/home/{{ ident|upper }}"
     opts: credentials=/secure/sherlock
     fstype: cifs
     state: mounted
@@ -33,10 +33,10 @@
 - name: Setup default git configuration
   template:
     src: templates/gitconfig.j2
-    dest: "/home/{{ ident }}/.gitconfig"
+    dest: "/home/{{ ident|upper }}/.gitconfig"
     mode: 0644
   become: true
-  become_user: "{{ ident }}"
+  become_user: "{{ ident|upper }}"
   become_method: su
 
 - name: install hipchat
