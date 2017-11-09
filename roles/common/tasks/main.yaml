@@ -66,6 +66,34 @@
     enabled: yes
 
 #
+# Install Kubernetes
+#
+- name: Add kubernetes repository
+  yum_repository:
+    name: Kubernetes
+    description: Kubernetes
+    file: kubernetes
+    baseurl: https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+    enabled: true
+    gpgkey: https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+    gpgcheck: true
+    repo_gpgcheck: true
+    state: present
+
+- name: Add kubernetes key
+  rpm_key:
+    state: present
+    key: "{{ item }}"
+  with_items:
+    - https://packages.cloud.google.com/yum/doc/yum-key.gpg
+    - https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+
+- name: Install kubectl
+  yum:
+    name: "kubectl-{{ kubectl_version }}"
+    state: present
+
+#
 # Install Google Chrome
 #
 - name: Add Google Chome repository
