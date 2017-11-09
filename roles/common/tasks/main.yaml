@@ -1,0 +1,168 @@
+#
+# Proxy settings and certificates
+#
+- name: Setup environment proxy
+  template: src=templates/environment.j2 dest=/etc/environment
+  when: proxy_env.http_proxy|default("") != ""
+
+- name: Install proxy cert
+  copy: src=files/webproxy.pem dest=/etc/pki/ca-trust/source/anchors/webproxy.pem
+
+- name: Install docker.adeo.no cert
+  copy: src=files/dockeradeono.pem dest=/etc/pki/ca-trust/source/anchors/dockeradeono.pem
+
+- name: Install NAV Issuing Intern cert
+  copy: src=files/NAVIssuingIntern.pem dest=/etc/pki/ca-trust/source/anchors/NAVIssuingIntern.pem
+
+# *.nais.preprod.local is signed using the B27 Issuing CA Intern
+- name: Install *.nais.preprod.local cert
+  copy: src=files/B27_Issuing.pem dest=/etc/pki/ca-trust/source/anchors/B27_Issuing.pem
+
+- name: Enable update-ca-trust
+  command: /usr/bin/update-ca-trust
+
+#
+# Install docker
+#
+- name: Add docker repository
+  yum_repository:
+    name: Docker
+    description: Docker
+    file: docker
+    baseurl: https://download.docker.com/linux/centos/7/x86_64/stable
+    enabled: true
+    gpgkey: https://download.docker.com/linux/centos/gpg
+    gpgcheck: true
+    state: present
+
+- name: Remove container-selinux
+  yum:
+    name: container-selinux
+    state: absent
+
+- name: "Install docker-selinux-{{ docker_version }} package"
+  shell: "yum -y --setopt=obsoletes=0 install docker-ce-selinux"
+
+- name: "Install docker-{{ docker_version }} package"
+  yum:
+    name: "docker-ce-{{ docker_version }}"
+    state: present
+
+- name: Copy docker service file
+  copy: src=files/docker.service dest=/etc/systemd/system/docker.service
+
+- name: Creates directory
+  file: path=/etc/systemd/system/docker.service.d state=directory
+
+- name: Docker proxy settings
+  template: src=templates/docker-proxy.conf.j2 dest=/etc/systemd/system/docker.service.d/proxy.conf
+  when: proxy_env.http_proxy|default("") != ""
+
+- name: start service docker and issue daemon-reload to pick up config changes
+  systemd:
+    name: docker
+    state: started
+    daemon_reload: yes
+    enabled: yes
+
+#
+# Install Google Chrome
+#
+- name: Add Google Chome repository
+  yum_repository:
+    name: google-chrome
+    description: Google Chrome
+    baseurl: http://dl.google.com/linux/chrome/rpm/stable/$basearch
+    enabled: true
+    gpgcheck: true
+    state: present
+
+- name: Add Google Chrome key
+  rpm_key:
+    state: present
+    key: https://dl-ssl.google.com/linux/linux_signing_key.pub
+
+- name: downgrade glibc
+  shell: "yum downgrade glibc-2.17-157.el7_3.1.x86_64 glibc-common-2.17-157.el7_3.1.x86_64"
+
+- name: "Install google-chrome-{{ google_chrome_version }}"
+  yum:
+    name: "google-chrome-stable-{{ google_chrome_version }}"
+    state: present
+
+#
+# Install/Update git
+#
+- name: install git
+  yum:
+    name: git
+    state: latest
+
+#
+# Install java
+#
+- name: install java
+  yum:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - java-1.7.0-openjdk-devel
+    - java-1.8.0-openjdk-devel
+
+- name: set java 1.8 as default
+  alternatives:
+    name: java
+    link: /usr/bin/java
+    path: /usr/lib/jvm/java-1.8.0-openjdk/bin/java
+
+- name: set javac 1.8 as default
+  alternatives:
+    name: javac
+    link: /usr/bin/javac
+    path: /usr/lib/jvm/java-1.8.0-openjdk/bin/javac
+
+#
+# Install maven
+#
+- name: "Download and Install maven-{{ maven_version }}"
+  unarchive:
+    src: "{{ maven_internal_url }}/software/maven/apache-maven-{{ maven_version }}-bin.tar.gz"
+#    src: "http://apache.uib.no/maven/maven-3/{{ maven_version }}/binaries/apache-maven-{{ maven_version }}-bin.tar.gz"
+    dest: /opt
+    remote_src: yes
+
+- name: "set maven {{ maven_version }} as default"
+  alternatives:
+    name: mvn
+    link: /usr/bin/mvn
+    path: "/opt/apache-maven-{{ maven_version }}/bin/mvn"
+
+- name: Download maven settings.xml
+  get_url:
+    url: "{{ maven_internal_url }}/software/maven/settings.xml"
+    dest: "/opt/apache-maven-{{ maven_version }}/conf/settings.xml"
+
+#
+# Install node
+#
+- name: "Download and Install node-{{ node_version }}"
+  unarchive:
+    src: "https://nodejs.org/dist/v{{ node_version }}/node-v{{ node_version }}-linux-x64.tar.xz"
+    dest: /opt
+    remote_src: yes
+
+- name: "set node {{ node_version }} as default"
+  alternatives:
+    name: node
+    link: /usr/bin/node
+    path: "/opt/node-v{{ node_version }}-linux-x64/bin/node"
+
+- name: "set npm {{ node_version }} as default"
+  alternatives:
+    name: npm
+    link: /usr/bin/npm
+    path: "/opt/node-v{{ node_version }}-linux-x64/bin/npm"
+
+- name: Setup npmrc
+  copy: src=files/npmrc dest=/etc/npmrc
+  when: proxy_env.http_proxy|default("") != ""

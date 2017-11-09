@@ -1,0 +1,25 @@
+[all:vars]
+http_proxy=http://webproxy.company.com:8088
+https_proxy=http://webproxy.company.com:8088
+no_proxy="localhost,127.0.0.1,.company.com,{{ansible_default_ipv4.address}}"
+
+maven_internal_url=http://maven.domain.tld
+
+[jenkins]
+hostname.to.server1
+hostname.to.server2
+
+[jenkins:vars]
+git_config_name=<jenkins git user>
+git_config_email=<jenkins git email>
+
+[linuximage]
+localhost ansible_connection=local ansible_become_method=su ansible_become_pass=<root pw>
+
+[linuximage:vars]
+git_config_name=<your name>
+git_config_email=<your email>
+
+hostname_personlig_disk=hostname.tld
+hostname_felles_disk=hostname.tld
+

@@ -1,0 +1,55 @@
+- name: Update sudoers
+  template:
+    src: templates/sudoers.j2
+    dest: "/etc/sudoers.d/{{ ident }}"
+    mode: 0644
+    validate: "/usr/sbin/visudo -cf %s"
+
+- name: Creates secure directory
+  file: path=/secure state=directory
+
+- name: setup credentials
+  template:
+      src: templates/credentials.j2
+      dest: "/secure/sherlock"
+      mode: 0600
+
+- name: "mount {{ hostname_personlig_disk }}/home/{{ ident }}"
+  mount:
+    path: /mnt/w
+    src: "//{{ hostname_personlig_disk }}/home/{{ ident }}"
+    opts: credentials=/secure/sherlock
+    fstype: cifs
+    state: mounted
+
+- name: "mount //{{ hostname_felles_disk }}/felles"
+  mount:
+    path: /mnt/ff
+    src: "//{{ hostname_felles_disk }}/felles"
+    opts: credentials=/secure/sherlock
+    fstype: cifs
+    state: mounted
+
+- name: Setup default git configuration
+  template:
+    src: templates/gitconfig.j2
+    dest: "/home/{{ ident }}/.gitconfig"
+    mode: 0644
+  become: true
+  become_user: "{{ ident }}"
+  become_method: su
+
+- name: install hipchat
+  yum:
+    name: "{{ maven_internal_url }}/software/hipchat/HipChat4-4.29.4.1662.rpm"
+    state: present
+
+- name: install remote desktop client
+  yum:
+    name: freerdp
+    state: latest
+
+- name: install ICAClient
+  yum:
+    name: /mnt/f/programvare_linux/ICAClient/ICAClient-rhel-13.5.0.10185126-0.x86_64.rpm
+    state: present

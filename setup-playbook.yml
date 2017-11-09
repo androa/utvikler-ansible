@@ -1,0 +1,25 @@
+- hosts: all
+  become: yes
+  roles:
+    - common
+
+- hosts: jenkins
+  become: yes
+  roles:
+    - jenkins
+
+- hosts: linuximage
+  become: yes
+  vars_prompt:
+    - name: "ident"
+      prompt: "Enter your NAV ident"
+      private: no
+    - name: "ident_domain"
+      prompt: "Enter domain"
+      default: "adeo.no"
+      private: no
+    - name: "ident_password"
+      prompt: "Enter your NAV password"
+      private: yes
+  roles:
+    - linuximage

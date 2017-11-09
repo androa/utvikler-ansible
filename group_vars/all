@@ -1,0 +1,14 @@
+proxy_env:
+    http_proxy: "{{ http_proxy | default(None) }}"
+    https_proxy: "{{ https_proxy | default(None) }}"
+    no_proxy: "{{ no_proxy | default(None) }}"
+
+git_config:
+    name: "{{ git_config_name }}"
+    email: "{{ git_config_email }}"
+
+docker_version: 17.03.1.ce
+google_chrome_version: 62.0.3202.89
+maven_version: 3.3.9
+node_version: 8.9.1
+jenkins_version: 2.73.2
