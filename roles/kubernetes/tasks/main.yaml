@@ -22,3 +22,4 @@
   yum:
     name: "kubectl-{{ kubectl_version }}"
     state: present
+    update_cache: yes
