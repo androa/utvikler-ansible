@@ -15,9 +15,6 @@
     state: present
     key: https://dl-ssl.google.com/linux/linux_signing_key.pub
 
-- name: downgrade glibc
-  shell: "yum downgrade glibc-2.17-157.el7_3.1.x86_64 glibc-common-2.17-157.el7_3.1.x86_64"
-
 - name: "Install google-chrome-{{ google_chrome_version }}"
   yum:
     name: "google-chrome-stable-{{ google_chrome_version }}"
