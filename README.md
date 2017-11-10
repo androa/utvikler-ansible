@@ -36,6 +36,9 @@ vi inventory
 ansible-playbook -i inventory setup-playbook.yaml
 ```
 
+Det kan være lurt å logge ut og så inn igjen etterpå,
+spesielt dersom du begynte med et helt nytt image.
+
 ## Eksempel-inventory
 
 ```

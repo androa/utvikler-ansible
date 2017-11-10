@@ -54,10 +54,15 @@
 #
 # Install maven
 #
-- name: "Download and Install maven-{{ maven_version }}"
+- name: "Download maven-{{ maven_version }}"
+  get_url:
+    url: "http://apache.uib.no/maven/maven-3/{{ maven_version }}/binaries/apache-maven-{{ maven_version }}-bin.tar.gz"
+    dest: "/opt/apache-maven-{{ maven_version }}-bin.tar.gz"
+    timeout: 60
+
+- name: "Install maven-{{ maven_version }}"
   unarchive:
-    src: "{{ maven_internal_url }}/software/maven/apache-maven-{{ maven_version }}-bin.tar.gz"
-#    src: "http://apache.uib.no/maven/maven-3/{{ maven_version }}/binaries/apache-maven-{{ maven_version }}-bin.tar.gz"
+    src: "/opt/apache-maven-{{ maven_version }}-bin.tar.gz"
     dest: /opt
     remote_src: yes
 
