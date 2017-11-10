@@ -16,7 +16,7 @@
 
 - name: "mount {{ hostname_personlig_disk }}/home/{{ ident }}"
   mount:
-    path: /mnt/w
+    name: /mnt/w
     src: "//{{ hostname_personlig_disk }}/home/{{ ident|upper }}"
     opts: credentials=/secure/sherlock
     fstype: cifs
@@ -24,7 +24,7 @@
 
 - name: "mount //{{ hostname_felles_disk }}/felles"
   mount:
-    path: /mnt/ff
+    name: /mnt/f
     src: "//{{ hostname_felles_disk }}/felles"
     opts: credentials=/secure/sherlock
     fstype: cifs
