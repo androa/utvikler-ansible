@@ -13,7 +13,15 @@ yum install ansible git
 exit
 
 # ... fortsett med kommandoene under "Generelt" 
+```
 
+Det kan hende at proxy ikke er installert ved førstegangs pålogging.
+Da kan du klone slik:
+
+```
+HTTPS_PROXY=http://webproxy.company.com \
+  git clone -c http.sslVerify=false \
+  https://github.com/navikt/utvikler-ansible.git
 ```
 
 ## Generelt
