@@ -1,0 +1,46 @@
+- name: Install docker.adeo.no cert
+  copy: src=files/dockeradeono.pem dest=/etc/pki/ca-trust/source/anchors/dockeradeono.pem
+
+- name: Enable update-ca-trust
+  command: /usr/bin/update-ca-trust
+
+- name: Add docker repository
+  yum_repository:
+    name: Docker
+    description: Docker
+    file: docker
+    baseurl: https://download.docker.com/linux/centos/7/x86_64/stable
+    enabled: true
+    gpgkey: https://download.docker.com/linux/centos/gpg
+    gpgcheck: true
+    state: present
+
+- name: Remove container-selinux
+  yum:
+    name: container-selinux
+    state: absent
+
+- name: "Install docker-selinux-{{ docker_version }} package"
+  shell: "yum -y --setopt=obsoletes=0 install docker-ce-selinux"
+
+- name: "Install docker-{{ docker_version }} package"
+  yum:
+    name: "docker-ce-{{ docker_version }}"
+    state: present
+
+- name: Copy docker service file
+  copy: src=files/docker.service dest=/etc/systemd/system/docker.service
+
+- name: Creates directory
+  file: path=/etc/systemd/system/docker.service.d state=directory
+
+- name: Docker proxy settings
+  template: src=templates/docker-proxy.conf.j2 dest=/etc/systemd/system/docker.service.d/proxy.conf
+  when: proxy_env.http_proxy|default("") != ""
+
+- name: start service docker and issue daemon-reload to pick up config changes
+  systemd:
+    name: docker
+    state: started
+    daemon_reload: yes
+    enabled: yes
