@@ -76,6 +76,7 @@
   get_url:
     url: "{{ maven_internal_url }}/software/maven/settings.xml"
     dest: "/opt/apache-maven-{{ maven_version }}/conf/settings.xml"
+    force: yes
 
 #
 # Install node
