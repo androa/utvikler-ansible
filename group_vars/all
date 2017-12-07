@@ -8,7 +8,7 @@ git_config:
     email: "{{ git_config_email }}"
 
 docker_version: 17.03.1.ce
-kubectl_version: 1.7.5
+kubectl_version: 1.8.4
 google_chrome_version: 62.0.3202.94
 maven_version: 3.3.9
 node_version: 8.9.1
