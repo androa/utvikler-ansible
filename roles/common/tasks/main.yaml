@@ -1,5 +1,5 @@
 #
-# Install Google Chrome
+# Install/update Google Chrome
 #
 - name: Add Google Chome repository
   yum_repository:
@@ -15,10 +15,10 @@
     state: present
     key: https://dl-ssl.google.com/linux/linux_signing_key.pub
 
-- name: "Install google-chrome-{{ google_chrome_version }}"
+- name: Install latest google-chrome-stable
   yum:
-    name: "google-chrome-stable-{{ google_chrome_version }}"
-    state: present
+    name: google-chrome-stable
+    state: latest
 
 #
 # Install/Update git

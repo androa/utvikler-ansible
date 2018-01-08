@@ -9,7 +9,6 @@ git_config:
 
 docker_version: 17.03.1.ce
 kubectl_version: 1.8.4
-google_chrome_version: 63.0.3239.84
 maven_version: 3.3.9
 node_version: 8.9.1
 jenkins_version: 2.73.2
