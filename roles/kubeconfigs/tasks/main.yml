@@ -1,0 +1,59 @@
+- name: Git clone kubeconfig
+  git:
+    repo: "http://{{ ident|upper }}:{{ ident_password }}@stash.devillo.no/scm/aura/kubeconfigs.git"
+    dest: "/home/{{ ident|upper }}/kubeconfigs"
+
+- name: KUBECONFIG miljøvariabel
+  lineinfile:
+    path: "/home/{{ ident|upper }}/.bashrc"
+    regex: "export KUBECONFIG="
+    line: "export KUBECONFIG=/home/{{ ident|upper }}/kubeconfigs/config"
+- name: Git clone kubectx
+  git:
+    repo: https://github.com/ahmetb/kubectx.git
+    dest: "/home/{{ ident|upper }}/workspace/kubectx"
+
+- name: Gjør kubectx kjørbar
+  file:
+    path: "/home/{{ ident|upper }}/workspace/kubectx/kubectx"
+    mode: 0755
+
+- name: Symlink kubectx
+  file:
+    path: "/home/{{ ident|upper }}/workspace/kubectx/kubectx"
+    src: "/home/{{ ident|upper }}/.local/bin/kubectx"
+    state: link
+
+- name: Legger til autocompletions for kubectx
+  lineinfile:
+    path: "/home/{{ ident|upper }}/.bashrc"
+    regex: "source /home/{{ ident|upper }}/workspace/kubectx/completion/kubectx.bash"
+    line: "source /home/{{ ident|upper }}/workspace/kubectx/completion/kubectx.bash"
+
+- name: Gjør kubens kjørbar
+  file:
+    path: "/home/{{ ident|upper }}/workspace/kubectx/kubens"
+    mode: 0755
+
+- name: Symlink kubens
+  file:
+    path: "/home/{{ ident|upper }}/workspace/kubectx/kubens"
+    src: "/home/{{ ident|upper }}/.local/bin/kubens"
+    state: link
+
+- name: Legger til autocmopletions for kubens
+  lineinfile:
+    path: "/home/{{ ident|upper }}/.bashrc"
+    regex: "source /home/{{ ident|upper }}/workspace/kubectx/completion/kubens.bash"
+    line: "source /home/{{ ident|upper }}/workspace/kubectx/completion/kubens.bash"
+
+- name: Gjør utils.bash kjørbar
+  file:
+    path: "/home/{{ ident|upper }}/workspace/kubectx/utils.bash"
+    mode: 0755
+
+- name: Symlink utils.bash
+  file:
+    path: "/home/{{ ident|upper }}/workspace/kubectx/utils.bash"
+    src: "/home/{{ ident|upper }}/.local/bin/utils.bash"
+    state: link

@@ -26,3 +26,4 @@
       private: yes
   roles:
     - linuximage
+    - kubeconfigs
