@@ -4,13 +4,13 @@
     state: directory
     mode: 0750
 
-- name: Legg til $USER/.local/bin i path
+- name: Legg til .local/bin i path
   lineinfile:
     path: "/home/{{ ident|upper }}/.profile"
-    regex: "/.local/bin"
+    regex: '/.local/bin'
     line: "export PATH=$PATH:/home/{{ ident|upper}}/.local/bin"
 
-- name: Lager katalogen $USER/workspace
+- name: Lager katalogen workspace
   file:
     path: "/home/{{ ident|upper }}/workspace"
     state: directory
@@ -24,7 +24,7 @@
 - name: KUBECONFIG miljøvariabel
   lineinfile:
     path: "/home/{{ ident|upper }}/.bashrc"
-    regex: "export KUBECONFIG="
+    regex: 'export KUBECONFIG='
     line: "export KUBECONFIG=/home/{{ ident|upper }}/kubeconfigs/config"
 - name: Git clone kubectx
   git:
@@ -45,7 +45,7 @@
 - name: Legger til autocompletions for kubectx
   lineinfile:
     path: "/home/{{ ident|upper }}/.bashrc"
-    regex: "source /home/{{ ident|upper }}/workspace/kubectx/completion/kubectx.bash"
+    regex: 'source /home/{{ ident|upper }}/workspace/kubectx/completion/kubectx.bash'
     line: "source /home/{{ ident|upper }}/workspace/kubectx/completion/kubectx.bash"
 
 - name: Gjør kubens kjørbar
@@ -62,7 +62,7 @@
 - name: Legger til autocmopletions for kubens
   lineinfile:
     path: "/home/{{ ident|upper }}/.bashrc"
-    regex: "source /home/{{ ident|upper }}/workspace/kubectx/completion/kubens.bash"
+    regex: 'source /home/{{ ident|upper }}/workspace/kubectx/completion/kubens.bash'
     line: "source /home/{{ ident|upper }}/workspace/kubectx/completion/kubens.bash"
 
 - name: Gjør utils.bash kjørbar
