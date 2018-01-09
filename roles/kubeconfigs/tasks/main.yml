@@ -1,3 +1,8 @@
+- name: Toucher .profile
+  file:
+    path "/home/{{ ident|upper }}/.profile"
+    state: touch
+
 - name: Lager katalogen .local/bin
   file:
     path: "/home/{{ ident|upper }}/.local/bin"
