@@ -28,6 +28,7 @@
   git:
     repo: "http://{{ ident|upper }}:{{ ident_password }}@stash.devillo.no/scm/aura/kubeconfigs.git"
     dest: "/home/{{ ident|upper }}/kubeconfigs"
+  become_user: "{{ ident|upper }}"
 
 - name: KUBECONFIG miljøvariabel
   lineinfile:
@@ -39,6 +40,7 @@
   git:
     repo: https://github.com/ahmetb/kubectx.git
     dest: "/home/{{ ident|upper }}/workspace/kubectx"
+  become_user: "{{ ident|upper }}"
 
 - name: Gjør kubectx kjørbar
   file:
