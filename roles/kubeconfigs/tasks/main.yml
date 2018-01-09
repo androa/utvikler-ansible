@@ -2,12 +2,14 @@
   file:
     path: "/home/{{ ident|upper }}/.profile"
     state: touch
+    become_user: "{{ ident|upper }}"
 
 - name: Lager katalogen .local/bin
   file:
     path: "/home/{{ ident|upper }}/.local/bin"
     state: directory
     mode: 0750
+    become_user: "{{ ident|upper }}"
 
 - name: Legg til .local/bin i path
   lineinfile:
@@ -20,6 +22,7 @@
     path: "/home/{{ ident|upper }}/workspace"
     state: directory
     mode: 0750
+    become_user: "{{ ident|upper }}"
 
 - name: Git clone kubeconfig
   git:
@@ -31,6 +34,7 @@
     path: "/home/{{ ident|upper }}/.bashrc"
     regexp: 'export KUBECONFIG='
     line: "export KUBECONFIG=/home/{{ ident|upper }}/kubeconfigs/config"
+
 - name: Git clone kubectx
   git:
     repo: https://github.com/ahmetb/kubectx.git
@@ -46,6 +50,7 @@
     path: "/home/{{ ident|upper }}/workspace/kubectx/kubectx"
     src: "/home/{{ ident|upper }}/.local/bin/kubectx"
     state: link
+    become_user: "{{ ident|upper }}"
 
 - name: Legger til autocompletions for kubectx
   lineinfile:
@@ -63,6 +68,7 @@
     path: "/home/{{ ident|upper }}/workspace/kubectx/kubens"
     src: "/home/{{ ident|upper }}/.local/bin/kubens"
     state: link
+    become_user: "{{ ident|upper }}"
 
 - name: Legger til autocmopletions for kubens
   lineinfile:
@@ -80,3 +86,4 @@
     path: "/home/{{ ident|upper }}/workspace/kubectx/utils.bash"
     src: "/home/{{ ident|upper }}/.local/bin/utils.bash"
     state: link
+    become_user: "{{ ident|upper }}"
