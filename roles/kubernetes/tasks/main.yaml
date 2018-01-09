@@ -23,21 +23,3 @@
     name: "kubectl-{{ kubectl_version }}"
     state: present
     update_cache: yes
-
-- name: Lager katalogen .local/bin
-  file:
-    path: "/home/{{ ident|upper }}/.local/bin"
-    state: directory
-    mode: 0750
-
-- name: Legg til $USER/.local/bin i path
-  lineinfile:
-    path: "/home/{{ ident|upper }}/.profile"
-    regex: "/.local/bin"
-    line: "export PATH=$PATH:/home/{{ ident|upper}}/.local/bin"
-
-- name: Lager katalogen $USER/workspace
-  file:
-    path: "/home/{{ ident|upper }}/workspace"
-    state: directory
-    mode: 0750
