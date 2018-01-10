@@ -49,8 +49,8 @@
 
 - name: Symlink kubectx
   file:
-    path: "/home/{{ ident|upper }}/workspace/kubectx/kubectx"
-    src: "/home/{{ ident|upper }}/.local/bin/kubectx"
+    path: "/home/{{ ident|upper }}/.local/bin/kubectx"
+    src: "/home/{{ ident|upper }}/workspace/kubectx/kubectx"
     state: link
   become_user: "{{ ident|upper }}"
 
@@ -67,8 +67,8 @@
 
 - name: Symlink kubens
   file:
-    path: "/home/{{ ident|upper }}/workspace/kubectx/kubens"
-    src: "/home/{{ ident|upper }}/.local/bin/kubens"
+    path: "/home/{{ ident|upper }}/.local/bin/kubens"
+    src: "/home/{{ ident|upper }}/workspace/kubectx/kubens"
     state: link
   become_user: "{{ ident|upper }}"
 
@@ -85,7 +85,7 @@
 
 - name: Symlink utils.bash
   file:
-    path: "/home/{{ ident|upper }}/workspace/kubectx/utils.bash"
-    src: "/home/{{ ident|upper }}/.local/bin/utils.bash"
+    path: "/home/{{ ident|upper }}/.local/bin/utils.bash"
+    src: "/home/{{ ident|upper }}/workspace/kubectx/utils.bash"
     state: link
   become_user: "{{ ident|upper }}"
