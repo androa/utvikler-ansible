@@ -4,19 +4,6 @@
     state: touch
   become_user: "{{ ident|upper }}"
 
-- name: Lager katalogen .local/bin
-  file:
-    path: "/home/{{ ident|upper }}/.local/bin"
-    state: directory
-    mode: 0750
-  become_user: "{{ ident|upper }}"
-
-- name: Legg til .local/bin i path
-  lineinfile:
-    path: "/home/{{ ident|upper }}/.profile"
-    regexp: '/\.local/bin'
-    line: "export PATH=$PATH:/home/{{ ident|upper}}/.local/bin"
-
 - name: Lager katalogen workspace
   file:
     path: "/home/{{ ident|upper }}/workspace"
