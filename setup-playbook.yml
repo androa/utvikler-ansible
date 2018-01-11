@@ -26,4 +26,4 @@
       private: yes
   roles:
     - linuximage
-    - { role: kubeconfigs, become: yes }
+    - kubeconfigs
