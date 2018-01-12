@@ -3,74 +3,43 @@ NAV Utvikler Ansible Playbook
 
 Automatiserer oppsett av Linux utviklerimage og Jenkins byggservere.
 
-# Komme i gang
+## Komme i gang
 
-## Fra et helt fersk Linuximage
+### Fra et helt fersk Linuximage
+
+Vi trenger `git` og `ansible > 2.4` for å komme i gang.
 
 ```
 su - 
-yum install ansible git
+yum install git python2-pip
+pip install --upgrade pip
 exit
+pip install --user ansible
 
 # ... fortsett med kommandoene under "Generelt" 
 ```
 
-Det kan hende at proxy ikke er installert ved førstegangs pålogging.
-Da kan du klone slik:
 
-```
-HTTPS_PROXY=http://webproxy.company.com \
-  git clone -c http.sslVerify=false \
-  https://github.com/navikt/utvikler-ansible.git
-```
+### Generelt
 
-## Generelt
+Du trenger repoet `utvikler-ansible` under `navikt`.
 ```
+# cd workspace
 git clone https://github.com/navikt/utvikler-ansible.git
 cd utvikler-ansible
 
 cp example-inventory inventory
 # update inventory with your own hosts
-vi inventory
 
 ansible-playbook -i inventory setup-playbook.yaml
 ```
 
-Det kan være lurt å logge ut og så inn igjen etterpå,
-spesielt dersom du begynte med et helt nytt image.
+Det kan være lurt å logge ut og så inn igjen etterpå, spesielt dersom du begynte med et helt nytt image.
 
-## Eksempel-inventory
 
-```
-[all:vars]
-http_proxy=http://webproxy.company.com:8088
-https_proxy=http://webproxy.company.com:8088
-no_proxy="localhost,127.0.0.1,.company.com,{{ansible_default_ipv4.address}}"
+## Roles
 
-maven_internal_url=http://maven.domain.tld
-
-[jenkins]
-hostname.to.server1
-hostname.to.server2
-
-[jenkins:vars]
-git_config_name=<jenkins git user>
-git_config_email=<jenkins git email>
-
-[linuximage]
-localhost ansible_connection=local ansible_become_method=su ansible_become_pass=<root pw>
-
-[linuximage:vars]
-git_config_name=<your name>
-git_config_email=<your email>
-
-hostname_personlig_disk=hostname.tld
-hostname_felles_disk=hostname.tld
-```
-
-# Roles
-
-## `common` - Standardoppsett for alle hosts
+### `common` - Standardoppsett for alle hosts
 
 Linux utviklerimage og Jenkins-servere deler både operativsystem (`RHEL`) og hvilken sone de befinner seg i, og har dermed endel oppsett til felles:
 
@@ -85,14 +54,14 @@ Linux utviklerimage og Jenkins-servere deler både operativsystem (`RHEL`) og hv
 
 Hvilke versjoner som installeres beskrives i `group_vars/all`.
 
-## `jenkins` - Jenkins byggserver
+### `jenkins` - Jenkins byggserver
 
 Det eneste som blir installert her, utover det som er beskrevet for `common`, er:
 
 * Jenkins
 * Git-config for `jenkins`-brukeren (`user.name` og `user.email`)
 
-## `linuximage` - Linux utviklerimage
+### `linuximage` - Linux utviklerimage
 
 Foreløpig utfører `common` alle de nødvendige stegene, med untak av:
 
@@ -100,3 +69,11 @@ Foreløpig utfører `common` alle de nødvendige stegene, med untak av:
 * Mounter hjemmeområde og fellesdisk
 * Git-config (`user.name` og `user.email`)
 * Installerer HipChat og ICAClient
+
+### `kubernetes` - Kubernetes og Kubectl
+
+Installerer Kubernetes og Kubectl
+
+### `kubectx` - Kubectx og completions
+
+Installerer Kubectx og Kubens, pluss oppsett for KUBECONFIG og completions for kubectx, kubens, og kubectl.
