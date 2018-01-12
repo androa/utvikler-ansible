@@ -17,12 +17,6 @@
     dest: "/home/{{ ident|upper }}/kubeconfigs"
   become_user: "{{ ident|upper }}"
 
-- name: KUBECONFIG miljøvariabel
-  lineinfile:
-    path: "/home/{{ ident|upper }}/.bashrc"
-    regexp: 'export KUBECONFIG='
-    line: "export KUBECONFIG=/home/{{ ident|upper }}/kubeconfigs/config"
-
 - name: Git clone kubectx
   git:
     repo: https://github.com/ahmetb/kubectx.git
@@ -41,12 +35,6 @@
     state: link
   become_user: "{{ ident|upper }}"
 
-- name: Legger til autocompletions for kubectx
-  lineinfile:
-    path: "/home/{{ ident|upper }}/.bashrc"
-    regexp: 'source /home/{{ ident|upper }}/workspace/kubectx/completion/kubectx.bash'
-    line: "source /home/{{ ident|upper }}/workspace/kubectx/completion/kubectx.bash"
-
 - name: Gjør kubens kjørbar
   file:
     path: "/home/{{ ident|upper }}/workspace/kubectx/kubens"
@@ -59,12 +47,6 @@
     state: link
   become_user: "{{ ident|upper }}"
 
-- name: Legger til autocmopletions for kubens
-  lineinfile:
-    path: "/home/{{ ident|upper }}/.bashrc"
-    regexp: 'source /home/{{ ident|upper }}/workspace/kubectx/completion/kubens.bash'
-    line: "source /home/{{ ident|upper }}/workspace/kubectx/completion/kubens.bash"
-
 - name: Gjør utils.bash kjørbar
   file:
     path: "/home/{{ ident|upper }}/workspace/kubectx/utils.bash"
@@ -76,3 +58,8 @@
     src: "/home/{{ ident|upper }}/workspace/kubectx/utils.bash"
     state: link
   become_user: "{{ ident|upper }}"
+
+- name: Completions og KUBECONFIG
+  copy:
+    src: files/etc_profiled_nav.sh
+    dest: /etc/profile.d/nav.sh
