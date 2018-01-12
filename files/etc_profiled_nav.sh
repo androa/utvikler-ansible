@@ -5,6 +5,7 @@ export KUBECONFIG="$HOME/kubeconfigs/config"
 if [ "$0" = "/usr/bin/bash" ]; then
     . "$HOME/workspace/kubectx/completion/kubectx.bash"
     . "$HOME/workspace/kubectx/completion/kubens.bash"
+    . "$HOME/workspace/kubectx/utils.bash"
 
     if [ ! -f "$HOME/.bash_helm" ]; then
 	"$HOME/.local/bin/helm" completion bash > .bash_helm

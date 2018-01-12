@@ -47,18 +47,6 @@
     state: link
   become_user: "{{ ident|upper }}"
 
-- name: Gjør utils.bash kjørbar
-  file:
-    path: "/home/{{ ident|upper }}/workspace/kubectx/utils.bash"
-    mode: 0755
-
-- name: Symlink utils.bash
-  file:
-    path: "/home/{{ ident|upper }}/.local/bin/utils.bash"
-    src: "/home/{{ ident|upper }}/workspace/kubectx/utils.bash"
-    state: link
-  become_user: "{{ ident|upper }}"
-
 - name: Completions og KUBECONFIG
   copy:
     src: files/etc_profiled_nav.sh
