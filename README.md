@@ -37,6 +37,15 @@ ansible-playbook -i inventory setup-playbook.yaml
 Det kan være lurt å logge ut og så inn igjen etterpå, spesielt dersom du begynte med et helt nytt image.
 
 
+### Ekstra
+
+Ønsker du å starte `bash` hver gang terminalen din starter, så kan du legge følgende i `.kshrc`:
+
+```
+test -z "$BASH" && test -x /usr/bin/bash && exec /usr/bin/bash -l
+```
+
+
 ## Roles
 
 ### `common` - Standardoppsett for alle hosts
