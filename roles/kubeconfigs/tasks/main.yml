@@ -1,0 +1,47 @@
+- name: Lager katalogen workspace
+  file:
+    path: "/home/{{ ident|upper }}/workspace"
+    state: directory
+    mode: 0750
+  become_user: "{{ ident|upper }}"
+
+- name: Git clone kubeconfig
+  git:
+    repo: "http://{{ ident|upper }}:{{ ident_password }}@stash.devillo.no/scm/aura/kubeconfigs.git"
+    dest: "/home/{{ ident|upper }}/kubeconfigs"
+  become_user: "{{ ident|upper }}"
+
+- name: Git clone kubectx
+  git:
+    repo: https://github.com/ahmetb/kubectx.git
+    dest: "/home/{{ ident|upper }}/workspace/kubectx"
+  become_user: "{{ ident|upper }}"
+
+- name: Gjør kubectx kjørbar
+  file:
+    path: "/home/{{ ident|upper }}/workspace/kubectx/kubectx"
+    mode: "a+x"
+
+- name: Symlink kubectx
+  file:
+    path: "/home/{{ ident|upper }}/.local/bin/kubectx"
+    src: "/home/{{ ident|upper }}/workspace/kubectx/kubectx"
+    state: link
+  become_user: "{{ ident|upper }}"
+
+- name: Gjør kubens kjørbar
+  file:
+    path: "/home/{{ ident|upper }}/workspace/kubectx/kubens"
+    mode: "a+x"
+
+- name: Symlink kubens
+  file:
+    path: "/home/{{ ident|upper }}/.local/bin/kubens"
+    src: "/home/{{ ident|upper }}/workspace/kubectx/kubens"
+    state: link
+  become_user: "{{ ident|upper }}"
+
+- name: Completions og KUBECONFIG
+  copy:
+    src: files/kubeconfig.sh
+    dest: /etc/profile.d/kubeconfig.sh
