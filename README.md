@@ -7,14 +7,12 @@ Automatiserer oppsett av Linux utviklerimage og Jenkins byggservere.
 
 ### Fra et helt fersk Linuximage
 
-Vi trenger `git` og `ansible > 2.4` for å komme i gang.
+Vi trenger `git` og `ansible` for å komme i gang.
 
 ```
 su - 
-yum install git python2-pip
-pip install --upgrade pip
+yum install git ansible
 exit
-pip install --user ansible
 
 # ... fortsett med kommandoene under "Generelt" 
 ```
