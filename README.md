@@ -22,7 +22,6 @@ exit
 
 Du trenger repoet `utvikler-ansible` under `navikt`.
 ```
-# cd workspace
 git clone https://github.com/navikt/utvikler-ansible.git
 cd utvikler-ansible
 
