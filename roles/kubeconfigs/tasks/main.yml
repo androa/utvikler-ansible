@@ -1,9 +1,3 @@
-- name: Toucher .profile
-  file:
-    path: "/home/{{ ident|upper }}/.profile"
-    state: touch
-  become_user: "{{ ident|upper }}"
-
 - name: Lager katalogen workspace
   file:
     path: "/home/{{ ident|upper }}/workspace"
@@ -26,7 +20,7 @@
 - name: Gjør kubectx kjørbar
   file:
     path: "/home/{{ ident|upper }}/workspace/kubectx/kubectx"
-    mode: 0755
+    mode: "a+x"
 
 - name: Symlink kubectx
   file:
@@ -38,7 +32,7 @@
 - name: Gjør kubens kjørbar
   file:
     path: "/home/{{ ident|upper }}/workspace/kubectx/kubens"
-    mode: 0755
+    mode: "a+x"
 
 - name: Symlink kubens
   file:
@@ -49,5 +43,5 @@
 
 - name: Completions og KUBECONFIG
   copy:
-    src: files/etc_profiled_nav.sh
-    dest: /etc/profile.d/nav.sh
+    src: files/kubeconfig.sh
+    dest: /etc/profile.d/kubeconfig.sh
