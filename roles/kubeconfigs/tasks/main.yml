@@ -21,6 +21,12 @@
   file:
     path: "/home/{{ ident|upper }}/workspace/kubectx/kubectx"
     mode: "a+x"
+    
+- name: Sørg for at /home/{{ ident|upper }}/.local/bin/ finnes
+  file: 
+    path: "/home/{{ ident|upper }}/.local/bin/"
+    state: directory
+  become_user: "{{ ident|upper }}"
 
 - name: Symlink kubectx
   file:
