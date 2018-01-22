@@ -28,7 +28,7 @@ cd utvikler-ansible
 cp example-inventory inventory
 # update inventory with your own hosts
 
-ansible-playbook -i inventory setup-playbook.yaml
+ansible-playbook -i inventory setup-playbook.yml
 ```
 
 Det kan være lurt å logge ut og så inn igjen etterpå, spesielt dersom du begynte med et helt nytt image.
