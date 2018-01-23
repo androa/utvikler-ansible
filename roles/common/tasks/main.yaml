@@ -107,4 +107,4 @@
   lineinfile:
     dest: /etc/vmware/viewagent-custom.conf
     regexp: '#?Subnet='
-    line: 'Subnet=10.33.46.0/23'
+    line: "Subnet={{ vmware_subnet }}"
