@@ -102,3 +102,9 @@
 - name: Setup npmrc
   copy: src=files/npmrc dest=/etc/npmrc
   when: proxy_env.http_proxy|default("") != ""
+
+- name: Specifying subnet for vmware-viewagent
+  lineinfile:
+    dest: /etc/vmware/viewagent-custom.conf
+    regexp: '#?Subnet='
+    line: "Subnet={{ vmware_subnet }}"
