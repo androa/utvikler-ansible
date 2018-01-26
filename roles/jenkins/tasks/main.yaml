@@ -7,13 +7,9 @@
     description: Jenkins
     baseurl: https://pkg.jenkins.io/redhat-stable
     enabled: true
+    gpgkey: https://jenkins-ci.org/redhat/jenkins-ci.org.key
     gpgcheck: true
     state: present
-
-- name: Add Jenkins key
-  rpm_key:
-    state: present
-    key: https://jenkins-ci.org/redhat/jenkins-ci.org.key
 
 - name: "install jenkins {{ jenkins_version }}"
   yum:

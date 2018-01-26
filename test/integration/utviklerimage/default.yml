@@ -1,0 +1,5 @@
+---
+- name: Test utviklerimage specifics
+  hosts: utviklerimage
+  roles:
+    - docker

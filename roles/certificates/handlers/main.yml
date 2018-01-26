@@ -1,0 +1,2 @@
+- name: update trust store
+  command: /usr/bin/update-ca-trust

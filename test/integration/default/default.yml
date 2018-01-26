@@ -1,0 +1,9 @@
+---
+- name: Test shared functionality
+  hosts: all
+  become: yes
+  roles:
+    - certificates
+    - docker
+    - kubernetes
+    - common

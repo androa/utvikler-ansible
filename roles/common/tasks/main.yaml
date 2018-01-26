@@ -1,26 +1,4 @@
 #
-# Install/update Google Chrome
-#
-- name: Add Google Chome repository
-  yum_repository:
-    name: google-chrome
-    description: Google Chrome
-    baseurl: http://dl.google.com/linux/chrome/rpm/stable/$basearch
-    enabled: true
-    gpgcheck: true
-    state: present
-
-- name: Add Google Chrome key
-  rpm_key:
-    state: present
-    key: https://dl-ssl.google.com/linux/linux_signing_key.pub
-
-- name: Install latest google-chrome-stable
-  yum:
-    name: google-chrome-stable
-    state: latest
-
-#
 # Install/Update git
 #
 - name: install git
@@ -77,6 +55,7 @@
     url: "{{ maven_internal_url }}/software/maven/settings.xml"
     dest: "/opt/apache-maven-{{ maven_version }}/conf/settings.xml"
     force: yes
+  when: maven_internal_url is defined
 
 #
 # Install node

@@ -1,0 +1,46 @@
+---
+driver:
+  name: docker
+  use_sudo: false
+
+provisioner:
+  name: ansible_playbook
+  hosts:
+    - jenkins
+    - utviklerimage
+      #- linuximage
+  playbook: setup-playbook.yml
+  require_ansible_repo: true
+  ansible_verbose: false
+  ansible_verbosity: 2
+  ansible_diff: true
+  require_chef_for_busser: false
+  additional_copy_path:
+    - utviklerimage.yml
+    - jenkins.yml
+
+verifier:
+  name: inspec
+
+platforms:
+  - name: centos-7.4
+    driver_config:
+      image: centos/systemd
+      run_command: /usr/sbin/init
+      privileged: true
+      provision_command:
+        - sed -i 's/UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config
+        - systemctl enable sshd.service
+
+suites:
+  - name: default
+    inspec_tests:
+      - test/integration/default
+
+  - name: jenkins
+    inspec_tests:
+      - test/integration/jenkins
+
+  - name: utviklerimage
+    inspec_tests:
+      - test/integration/utviklerimage

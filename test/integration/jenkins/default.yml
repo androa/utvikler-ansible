@@ -1,0 +1,6 @@
+---
+- name: Test a Jenkins Server
+  hosts: jenkins
+  become: yes
+  roles:
+    - jenkins
