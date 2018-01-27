@@ -1,0 +1,17 @@
+- name: Download latest firefox
+  get_url:
+    url: https://download.mozilla.org/?product=firefox-latest&os=linux64&lang=en-US
+    dest: /opt/firefox-latest.tar.bz2
+    timeout: 60
+
+- name: Unpack latest firefox
+  unarchive:
+    src: /opt/firefox-latest.tar.bz2
+    dest: /opt
+    remote_src: yes
+
+- name: Symlink firefox
+  file:
+    path: /usr/bin/firefox
+    src: /opt/firefox/firefox
+    state: link
