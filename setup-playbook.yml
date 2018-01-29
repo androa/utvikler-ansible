@@ -27,3 +27,4 @@
   roles:
     - linuximage
     - kubeconfigs
+    - intellij
