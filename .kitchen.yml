@@ -6,18 +6,19 @@ driver:
 provisioner:
   name: ansible_playbook
   hosts:
-    - jenkins
-    - utviklerimage
-      #- linuximage
-  playbook: setup-playbook.yml
+    - machine-default
+    - machine-jenkins
+    - machine-utvikler
+      #playbook: setup-playbook.yml
   require_ansible_repo: true
   ansible_verbose: false
   ansible_verbosity: 2
   ansible_diff: true
   require_chef_for_busser: false
-  additional_copy_path:
-    - utviklerimage.yml
-    - jenkins.yml
+  #additional_copy_path:
+  #  - utviklerimage.yml
+  #  - jenkins.yml
+  ansible_extra_flags: <%= ENV['ANSIBLE_EXTRA_FLAGS'] %>
 
 verifier:
   name: inspec
@@ -41,6 +42,6 @@ suites:
     inspec_tests:
       - test/integration/jenkins
 
-  - name: utviklerimage
+  - name: developer-tests
     inspec_tests:
-      - test/integration/utviklerimage
+      - test/integration/linuximage

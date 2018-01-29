@@ -6,12 +6,12 @@
     - kubernetes
     - common
 
-- hosts: jenkins
+- hosts: buildservers
   become: yes
   roles:
     - jenkins
 
-- hosts: linuximage
+- hosts: utviklerimages
   become: yes
   vars_prompt:
     - name: "ident"
