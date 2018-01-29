@@ -7,7 +7,7 @@
 - name: "Install alternative node-{{ node_version }}"
   command: >
     /usr/sbin/alternatives
-      --install /usr/bin/node node /opt/node-v{{ node_version }}-linux-x64/bin/node {{ item|replace(".", "") }}
+      --install /usr/bin/node node /opt/node-v{{ node_version }}-linux-x64/bin/node {{ node_version|replace(".", "") }}
       --family node-{{ node_version }}
       --slave /usr/bin/npm npm /opt/node-v{{ node_version }}-linux-x64/bin/npm
 
