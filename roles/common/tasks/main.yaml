@@ -82,8 +82,13 @@
   copy: src=files/npmrc dest=/etc/npmrc
   when: proxy_env.http_proxy|default("") != ""
 
+- stat: path=/etc/vmware/viewagent-custom.conf
+  register: viewagent_config
+
 - name: Specifying subnet for vmware-viewagent
   lineinfile:
     dest: /etc/vmware/viewagent-custom.conf
     regexp: '#?Subnet='
     line: "Subnet={{ vmware_subnet }}"
+  when: viewagent_config.stat.exists == true
+

@@ -11,6 +11,11 @@
     gpgcheck: true
     state: present
 
+- name: "install initscripts"
+  yum:
+    name: "initscripts"
+    state: latest
+
 - name: "install jenkins {{ jenkins_version }}"
   yum:
     name: "jenkins-{{ jenkins_version }}"
@@ -19,7 +24,7 @@
 - name: Add jenkins to docker group
   user:
     name: jenkins
-    group: docker
+    groups: docker
     append: yes
 
 #
@@ -32,6 +37,7 @@
     owner: jenkins
     group: jenkins
     mode: 0644
+  when: git_config is defined
 
 #
 # start jenkins service
