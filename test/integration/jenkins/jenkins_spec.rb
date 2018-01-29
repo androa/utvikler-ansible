@@ -5,7 +5,7 @@ end
 describe user('jenkins') do
   it { should exist }
   it { should belong_to_group 'docker' }
-  its('home') { should eq '/var/lib/jenkins/' }
+  its('home') { should eq '/var/lib/jenkins' }
 end
 
 describe service('jenkins') do

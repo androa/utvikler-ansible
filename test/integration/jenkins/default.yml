@@ -1,6 +1,10 @@
 ---
 - name: Test a Jenkins Server
-  hosts: jenkins
-  become: yes
+  hosts: machine-jenkins
   roles:
+    - common
+    - docker
     - jenkins
+  vars:
+    git_config_name: Jenkins in the Kitchen
+    git_config_email: jenkins-kitchen@test.foo

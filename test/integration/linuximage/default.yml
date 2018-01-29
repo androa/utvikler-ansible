@@ -2,4 +2,8 @@
 - name: Test utviklerimage specifics
   hosts: utviklerimage
   roles:
-    - docker
+    - linuximage
+    - kubeconfigs
+  vars:
+    git_config_name: Developer in the Kitchen
+    git_config_email: Developer-kitchen@test.foo

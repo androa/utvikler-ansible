@@ -1,9 +1,10 @@
 ---
 - name: Test shared functionality
-  hosts: all
+  hosts: machine-default
   become: yes
   roles:
     - certificates
     - docker
     - kubernetes
+    - kubeconfigs
     - common
